@@ -4,7 +4,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/actor"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -3,9 +3,9 @@ package cluster
 import (
 	"sync"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/AsynkronIT/protoactor-go/eventstream"
-	"github.com/AsynkronIT/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/eventstream"
+	"github.com/qjpcpu/protoactor-go/log"
 )
 
 const (

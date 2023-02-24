@@ -4,7 +4,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/actor"
 )
 
 // Logger is message middleware which logs messages before continuing to the next middleware

@@ -4,10 +4,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/AsynkronIT/protoactor-go/cluster/chash"
-	"github.com/AsynkronIT/protoactor-go/log"
-	"github.com/AsynkronIT/protoactor-go/remote"
+	"github.com/qjpcpu/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/cluster/chash"
+	"github.com/qjpcpu/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/remote"
 	cmap "github.com/orcaman/concurrent-map"
 )
 

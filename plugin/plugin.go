@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/AsynkronIT/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/actor"
 )
 
 type plugin interface {

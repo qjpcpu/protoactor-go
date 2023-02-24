@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/AsynkronIT/protoactor-go/mailbox"
-	"github.com/AsynkronIT/protoactor-go/metrics"
+	"github.com/qjpcpu/protoactor-go/mailbox"
+	"github.com/qjpcpu/protoactor-go/metrics"
 	"go.opentelemetry.io/otel/metric"
 )
 

@@ -4,8 +4,8 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/AsynkronIT/protoactor-go/eventstream"
-	"github.com/AsynkronIT/protoactor-go/extensions"
+	"github.com/qjpcpu/protoactor-go/eventstream"
+	"github.com/qjpcpu/protoactor-go/extensions"
 )
 
 //goland:noinspection GoNameStartsWithPackageName

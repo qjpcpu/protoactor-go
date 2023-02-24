@@ -1,7 +1,7 @@
 package actor
 
 import (
-	"github.com/AsynkronIT/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/log"
 )
 
 var (

@@ -2,7 +2,7 @@ package remote
 
 import (
 	"fmt"
-	"github.com/AsynkronIT/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/actor"
 	"google.golang.org/grpc"
 )
 

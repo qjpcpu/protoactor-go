@@ -11,8 +11,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/AsynkronIT/protoactor-go/cluster"
-	"github.com/AsynkronIT/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/cluster"
+	"github.com/qjpcpu/protoactor-go/log"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 

@@ -3,8 +3,8 @@ package shared
 import (
 	"log"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/AsynkronIT/protoactor-go/cluster"
+	"github.com/qjpcpu/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/cluster"
 )
 
 func init() {

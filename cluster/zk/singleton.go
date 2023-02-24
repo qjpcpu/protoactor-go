@@ -3,7 +3,7 @@ package zk
 import (
 	"sync"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/actor"
 )
 
 type SingletonScheduler struct {

@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/actor"
 
-	"github.com/AsynkronIT/protoactor-go/cluster"
-	"github.com/AsynkronIT/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/cluster"
+	"github.com/qjpcpu/protoactor-go/log"
 	"github.com/hashicorp/consul/api"
 )
 

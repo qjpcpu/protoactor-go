@@ -1,8 +1,8 @@
 package mailbox
 
 import (
-	"github.com/AsynkronIT/protoactor-go/internal/queue/goring"
-	"github.com/AsynkronIT/protoactor-go/internal/queue/mpsc"
+	"github.com/qjpcpu/protoactor-go/internal/queue/goring"
+	"github.com/qjpcpu/protoactor-go/internal/queue/mpsc"
 )
 
 func NewPriorityGoringQueue() *priorityQueue {

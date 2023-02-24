@@ -8,8 +8,8 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/AsynkronIT/protoactor-go/log"
-	"github.com/AsynkronIT/protoactor-go/metrics"
+	"github.com/qjpcpu/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/metrics"
 	"go.opentelemetry.io/otel/attribute"
 )
 

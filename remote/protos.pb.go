@@ -7,7 +7,7 @@ import (
 	bytes "bytes"
 	context "context"
 	fmt "fmt"
-	actor "github.com/AsynkronIT/protoactor-go/actor"
+	actor "github.com/qjpcpu/protoactor-go/actor"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"

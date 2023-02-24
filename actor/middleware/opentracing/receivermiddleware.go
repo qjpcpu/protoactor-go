@@ -3,8 +3,8 @@ package opentracing
 import (
 	"fmt"
 
-	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/AsynkronIT/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/log"
 	"github.com/opentracing/opentracing-go"
 )
 

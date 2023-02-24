@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AsynkronIT/protoactor-go/cluster"
-	"github.com/AsynkronIT/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/cluster"
+	"github.com/qjpcpu/protoactor-go/log"
 	"github.com/go-zookeeper/zk"
 )
 

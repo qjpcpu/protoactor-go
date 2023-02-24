@@ -6,7 +6,7 @@ package cluster
 import (
 	bytes "bytes"
 	fmt "fmt"
-	actor "github.com/AsynkronIT/protoactor-go/actor"
+	actor "github.com/qjpcpu/protoactor-go/actor"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"

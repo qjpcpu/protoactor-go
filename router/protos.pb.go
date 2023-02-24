@@ -5,7 +5,7 @@ package router
 
 import (
 	fmt "fmt"
-	actor "github.com/AsynkronIT/protoactor-go/actor"
+	actor "github.com/qjpcpu/protoactor-go/actor"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"

@@ -11,9 +11,9 @@ import (
 	"remotelatency/messages"
 
 	console "github.com/AsynkronIT/goconsole"
-	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/AsynkronIT/protoactor-go/mailbox"
-	"github.com/AsynkronIT/protoactor-go/remote"
+	"github.com/qjpcpu/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/mailbox"
+	"github.com/qjpcpu/protoactor-go/remote"
 )
 
 type remoteActor struct {

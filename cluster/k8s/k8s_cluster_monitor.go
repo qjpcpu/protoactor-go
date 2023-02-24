@@ -1,9 +1,9 @@
 package k8s
 
 import (
-	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/AsynkronIT/protoactor-go/log"
-	"github.com/AsynkronIT/protoactor-go/scheduler"
+	"github.com/qjpcpu/protoactor-go/actor"
+	"github.com/qjpcpu/protoactor-go/log"
+	"github.com/qjpcpu/protoactor-go/scheduler"
 )
 
 type k8sClusterMonitorActor struct {
