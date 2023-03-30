@@ -40,12 +40,6 @@ func WithRoleChangedListener(l RoleChangedListener) Option {
 	}
 }
 
-func WithExposeAddress(addr string) Option {
-	return func(o *config) {
-		o.ExposeAddress = addr
-	}
-}
-
 func WithRoleChangedFunc(f OnRoleChangedFunc) Option {
 	return func(o *config) {
 		o.RoleChanged = f
@@ -83,7 +77,6 @@ type config struct {
 	SessionTimeout time.Duration
 	Auth           authConfig
 	RoleChanged    RoleChangedListener
-	ExposeAddress  string
 }
 
 func defaultConfig() *config {

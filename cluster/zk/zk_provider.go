@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-zookeeper/zk"
 	"github.com/qjpcpu/protoactor-go/cluster"
 	"github.com/qjpcpu/protoactor-go/log"
+	"github.com/go-zookeeper/zk"
 )
 
 var (
@@ -49,7 +49,6 @@ type Provider struct {
 	roleChangedListener RoleChangedListener
 	role                RoleType
 	roleChangedChan     chan RoleType
-	exposeAddress       string
 }
 
 // New zk cluster provider with config
@@ -72,7 +71,6 @@ func New(endpoints []string, opts ...Option) (*Provider, error) {
 		roleChangedListener: zkCfg.RoleChanged,
 		roleChangedChan:     make(chan RoleType, 1),
 		role:                Follower,
-		exposeAddress:       zkCfg.ExposeAddress,
 	}
 	conn, err := connectZk(endpoints, zkCfg.SessionTimeout, WithEventCallback(p.onEvent))
 	if err != nil {
@@ -97,9 +95,6 @@ func (p *Provider) IsLeader() bool {
 func (p *Provider) init(c *cluster.Cluster) error {
 	p.cluster = c
 	addr := p.cluster.ActorSystem.Address()
-	if p.exposeAddress != "" {
-		addr = p.exposeAddress
-	}
 	host, port, err := splitHostPort(addr)
 	if err != nil {
 		return err
