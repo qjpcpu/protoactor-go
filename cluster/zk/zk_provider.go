@@ -4,16 +4,16 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"net"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/go-zookeeper/zk"
 	"github.com/qjpcpu/protoactor-go/cluster"
 	"github.com/qjpcpu/protoactor-go/log"
-	"github.com/go-zookeeper/zk"
 )
 
 var (
@@ -501,15 +501,16 @@ func (p *Provider) publishClusterTopologyEvent() {
 }
 
 func splitHostPort(addr string) (host string, port int, err error) {
-	if h, p, e := net.SplitHostPort(addr); e != nil {
+	idx := strings.LastIndex(addr, ":")
+	if idx > 0 && idx < len(addr)-1 {
+		host = addr[:idx]
+		port, err = strconv.Atoi(addr[idx+1:])
+	} else {
 		if addr != "nonhost" {
-			err = e
+			err = errors.New("nonhost")
 		}
 		host = "nonhost"
 		port = -1
-	} else {
-		host = h
-		port, err = strconv.Atoi(p)
 	}
 	return
 }

@@ -1,8 +1,9 @@
 package actor
 
 import (
-	"net"
+	"errors"
 	"strconv"
+	"strings"
 
 	"github.com/qjpcpu/protoactor-go/eventstream"
 	"github.com/qjpcpu/protoactor-go/extensions"
@@ -29,7 +30,7 @@ func (as *ActorSystem) Address() string {
 
 func (as *ActorSystem) GetHostPort() (host string, port int, err error) {
 	addr := as.ProcessRegistry.Address
-	if h, p, e := net.SplitHostPort(addr); e != nil {
+	if h, p, e := splitHostPort(addr); e != nil {
 		if addr != localAddress {
 			err = e
 		}
@@ -38,6 +39,17 @@ func (as *ActorSystem) GetHostPort() (host string, port int, err error) {
 	} else {
 		host = h
 		port, err = strconv.Atoi(p)
+	}
+	return
+}
+
+func splitHostPort(addr string) (host string, port string, err error) {
+	idx := strings.LastIndex(addr, ":")
+	if idx > 0 && idx < len(addr)-1 {
+		host = addr[:idx]
+		port = addr[idx+1:]
+	} else {
+		err = errors.New("split fail " + addr)
 	}
 	return
 }
