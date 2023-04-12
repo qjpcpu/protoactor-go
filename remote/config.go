@@ -1,7 +1,9 @@
 package remote
 
 import (
-	"fmt"
+	"net"
+	"strconv"
+
 	"github.com/qjpcpu/protoactor-go/actor"
 	"google.golang.org/grpc"
 )
@@ -59,7 +61,7 @@ func (rc Config) WithAdvertisedHost(address string) Config {
 }
 
 func (rc Config) Address() string {
-	return fmt.Sprintf("%v:%v", rc.Host, rc.Port)
+	return net.JoinHostPort(rc.Host, strconv.FormatInt(int64(rc.Port), 10))
 }
 
 func Configure(host string, port int, kinds ...*Kind) Config {
