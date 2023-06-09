@@ -383,8 +383,11 @@ func (p *Provider) isLeaderOf(ns []*Node) bool {
 		return true
 	}
 	var minSeq int
+	var seqList []string
 	for _, node := range ns {
-		if seq := node.GetSeq(); (seq > 0 && seq < minSeq) || minSeq == 0 {
+		seq := node.GetSeq()
+		seqList = append(seqList, strconv.Itoa(seq))
+		if (seq > 0 && seq < minSeq) || minSeq == 0 {
 			minSeq = seq
 		}
 	}
@@ -392,6 +395,15 @@ func (p *Provider) isLeaderOf(ns []*Node) bool {
 		if p.self != nil && node.ID == p.self.ID {
 			return minSeq > 0 && minSeq == p.self.GetSeq()
 		}
+	}
+	if p.self != nil {
+		plog.Info("I'm follower",
+			log.Int("self_seq", p.self.GetSeq()),
+			log.Int("min_seq", minSeq),
+			log.String("seq_list", strings.Join(seqList, ",")),
+		)
+	} else {
+		plog.Info("I'm follower, self node info is blank")
 	}
 	return false
 }
