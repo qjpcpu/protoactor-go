@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -207,7 +208,11 @@ func (p *Provider) registerService() error {
 		return err
 	}
 	p.fullpath = path
-	seq, _ := parseSeq(path)
+	seq, err := parseSeq(path)
+	if err != nil {
+		plog.Error("createEphemeralChildNode fail.", log.String("node", p.getClusterKey()), log.Error(err))
+		return err
+	}
 	p.self.SetMeta(metaKeySeq, intToStr(seq))
 	plog.Info("RegisterService.", log.String("id", p.self.ID), log.Int("seq", seq))
 
@@ -333,7 +338,7 @@ func (p *Provider) clusterNotContainsSelfPath() bool {
 func (p *Provider) containSelf(ns []*Node) bool {
 	for _, node := range ns {
 		if p.self != nil && node.ID == p.self.ID {
-			return true
+			return p.self.GetSeq() == node.GetSeq()
 		}
 	}
 	return false
@@ -382,25 +387,26 @@ func (p *Provider) isLeaderOf(ns []*Node) bool {
 	if len(ns) == 1 && p.self != nil && ns[0].ID == p.self.ID {
 		return true
 	}
-	var minSeq int
-	var seqList []string
+	var seqList sequences
 	for _, node := range ns {
-		seq := node.GetSeq()
-		seqList = append(seqList, strconv.Itoa(seq))
-		if (seq > 0 && seq < minSeq) || minSeq == 0 {
-			minSeq = seq
-		}
+		seqList.Add(node.GetSeq())
 	}
+	minSeq := seqList.Min()
 	for _, node := range ns {
 		if p.self != nil && node.ID == p.self.ID {
-			return minSeq > 0 && minSeq == p.self.GetSeq()
+			plog.Info("Check self leadership",
+				log.Int("self_seq", p.self.GetSeq()),
+				log.Int("min_seq", minSeq),
+				log.Bool("is_leaader", minSeq == p.self.GetSeq()),
+			)
+			return minSeq == p.self.GetSeq()
 		}
 	}
 	if p.self != nil {
 		plog.Info("I'm follower",
 			log.Int("self_seq", p.self.GetSeq()),
 			log.Int("min_seq", minSeq),
-			log.String("seq_list", strings.Join(seqList, ",")),
+			log.String("seq_list", seqList.String()),
 		)
 	} else {
 		plog.Info("I'm follower, self node info is blank")
@@ -560,4 +566,30 @@ func (pro *Provider) createEphemeralChildNode(baseKey string, data []byte) (stri
 		}
 	}
 	return path, err
+}
+
+type sequences []int
+
+func (s sequences) Min() int {
+	if len(s) == 0 {
+		return -1
+	}
+	sort.Sort(sort.IntSlice(s))
+	return s[0]
+}
+
+func (s sequences) Add(v int) sequences {
+	return sequences(append(s, v))
+}
+
+func (s sequences) String() string {
+	var str string
+	for i, num := range s {
+		if i == 0 {
+			str = strconv.Itoa(num)
+		} else {
+			str += "," + strconv.Itoa(num)
+		}
+	}
+	return str
 }
