@@ -252,7 +252,7 @@ func (p *Provider) deregisterService() error {
 
 func (p *Provider) keepWatching(ctx context.Context, registerSelf bool) error {
 	clusterKey := p.buildKey(p.clusterName)
-	evtChan, err := p.addWatcher(ctx, clusterKey)
+	evtChan, err := p.addWatcher(ctx, clusterKey, registerSelf)
 	if err != nil {
 		plog.Error("list children fail", log.String("node", clusterKey), log.Error(err))
 		return err
@@ -261,7 +261,7 @@ func (p *Provider) keepWatching(ctx context.Context, registerSelf bool) error {
 	return p._keepWatching(registerSelf, evtChan)
 }
 
-func (p *Provider) addWatcher(ctx context.Context, clusterKey string) (<-chan zk.Event, error) {
+func (p *Provider) addWatcher(ctx context.Context, clusterKey string, registerSelf bool) (<-chan zk.Event, error) {
 	_, stat, evtChan, err := p.conn.ChildrenW(clusterKey)
 	if err != nil {
 		plog.Error("list children fail", log.String("node", clusterKey), log.Error(err))
@@ -279,11 +279,16 @@ func (p *Provider) addWatcher(ctx context.Context, clusterKey string) (<-chan zk
 	if err != nil {
 		return nil, err
 	}
+	if registerSelf && !p.containSelf(nodes) {
+		if err = p.registerService(); err != nil {
+			return nil, err
+		}
+	}
 	// initialize members
 	p.updateNodes(nodes, version)
 	p.publishClusterTopologyEvent()
 	p.updateLeadership(nodes)
-	return p.addWatcher(ctx, clusterKey)
+	return p.addWatcher(ctx, clusterKey, registerSelf)
 }
 
 func (p *Provider) isChildrenChanged(ctx context.Context, stat *zk.Stat) bool {
@@ -305,7 +310,7 @@ func (p *Provider) _keepWatching(registerSelf bool, stream <-chan zk.Event) erro
 		plog.Error("Failure fetch nodes when watching service.", log.Error(err))
 		return err
 	}
-	if !p.containSelf(nodes) && registerSelf {
+	for registerSelf && !p.containSelf(nodes) {
 		// i am lost, register self
 		if err = p.registerService(); err != nil {
 			return err
@@ -316,6 +321,7 @@ func (p *Provider) _keepWatching(registerSelf bool, stream <-chan zk.Event) erro
 			plog.Error("Failure fetch nodes when watching service.", log.Error(err))
 			return err
 		}
+		time.Sleep(time.Second)
 	}
 	p.updateNodes(nodes, version)
 	p.publishClusterTopologyEvent()
@@ -336,12 +342,21 @@ func (p *Provider) clusterNotContainsSelfPath() bool {
 }
 
 func (p *Provider) containSelf(ns []*Node) bool {
+	var bContainSelf bool
 	for _, node := range ns {
 		if p.self != nil && node.ID == p.self.ID {
-			return p.self.GetSeq() == node.GetSeq()
+			bContainSelf = p.self.GetSeq() == node.GetSeq()
+			break
 		}
 	}
-	return false
+	if !bContainSelf {
+		if p.self == nil {
+			plog.Info("I'm lost and self is blank")
+		} else {
+			plog.Info("I'm lost", log.String("id", p.self.ID), log.Int("seq", p.self.GetSeq()), log.String("path", p.self.Address))
+		}
+	}
+	return bContainSelf
 }
 
 func (p *Provider) startRoleChangedNotifyLoop() {
@@ -368,7 +383,7 @@ func (p *Provider) updateLeadership(ns []*Node) {
 }
 
 func (p *Provider) onEvent(evt zk.Event) {
-	plog.Debug("Zookeeper event.", log.String("type", evt.Type.String()), log.String("state", evt.State.String()), log.String("path", evt.Path))
+	plog.Info("Zookeeper event.", log.String("type", evt.Type.String()), log.String("state", evt.State.String()), log.String("path", evt.Path))
 	if evt.Type != zk.EventSession {
 		return
 	}
