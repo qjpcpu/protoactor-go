@@ -389,7 +389,7 @@ func (p *Provider) isLeaderOf(ns []*Node) bool {
 	}
 	var seqList sequences
 	for _, node := range ns {
-		seqList.Add(node.GetSeq())
+		seqList = seqList.Add(node.GetSeq())
 	}
 	minSeq := seqList.Min()
 	for _, node := range ns {
